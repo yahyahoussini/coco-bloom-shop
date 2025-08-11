@@ -1,4 +1,31 @@
 import { Link } from "react-router-dom";
+import { useLanguage } from "@/context/LanguageContext";
+import { Button } from "@/components/ui/button";
+import { locales } from "@/lib/i18n";
+
+const LanguageSwitcher = () => {
+  const { locale, setLocale } = useLanguage();
+
+  return (
+    <div className="flex items-center justify-center space-x-2">
+      <h4 className="font-semibold text-sm">Language:</h4>
+      <div className="flex items-center rounded-lg border p-1">
+        {locales.map((loc) => (
+          <Button
+            key={loc}
+            variant={locale === loc ? "secondary" : "ghost"}
+            size="sm"
+            onClick={() => setLocale(loc as 'en' | 'fr' | 'ar')}
+            className="text-xs"
+          >
+            {loc.toUpperCase()}
+          </Button>
+        ))}
+      </div>
+    </div>
+  );
+};
+
 
 const Footer = () => {
   return (
@@ -41,8 +68,13 @@ const Footer = () => {
           </ul>
         </div>
       </div>
-      <div className="py-4 border-t text-center text-xs text-muted-foreground">
-        © {new Date().getFullYear()} Coco Bloom. All rights reserved.
+      <div className="container mx-auto px-4">
+        <div className="py-4 border-t flex flex-col md:flex-row justify-between items-center gap-4">
+          <p className="text-xs text-muted-foreground text-center md:text-left">
+            © {new Date().getFullYear()} Coco Bloom. All rights reserved.
+          </p>
+          <LanguageSwitcher />
+        </div>
       </div>
     </footer>
   );
