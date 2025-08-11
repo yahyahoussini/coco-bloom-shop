@@ -1,18 +1,22 @@
 import { Link } from "react-router-dom";
+import { useLocaleStore } from "@/state/locale";
+import { Button } from "@/components/ui/button";
 
 const Footer = () => {
+  const { locale, setLocale } = useLocaleStore();
+
   return (
     <footer className="mt-16 border-t">
       <div className="container mx-auto px-4 py-10 grid gap-8 md:grid-cols-4">
         <div>
           <div className="flex items-center gap-2 mb-3">
             <div className="size-8 rounded-pill bg-secondary grid place-items-center">
-              <span className="text-sm font-semibold">CB</span>
+              <span className="text-sm font-semibold">Z</span>
             </div>
-            <span className="font-head text-lg font-semibold">Coco Bloom</span>
+            <span className="font-head text-lg font-semibold">zayna</span>
           </div>
           <p className="text-sm text-muted-foreground max-w-sm">
-            Premium bio-cosmetics crafted with care. Clean, soft and modern skincare designed for everyday rituals.
+            Moroccan heritage, clinically-minded clean beauty with cash-on-delivery convenience.
           </p>
         </div>
         <div>
@@ -20,29 +24,28 @@ const Footer = () => {
           <ul className="space-y-2 text-sm">
             <li><Link to="/shop" className="hover:underline">Shop</Link></li>
             <li><Link to="/about" className="hover:underline">About</Link></li>
-            <li><Link to="/blog" className="hover:underline">Blog</Link></li>
             <li><Link to="/contact" className="hover:underline">Contact</Link></li>
           </ul>
         </div>
         <div>
           <h4 className="font-semibold mb-3">Contact</h4>
           <ul className="space-y-2 text-sm">
-            <li>Email: hello@cocobloom.example</li>
-            <li>Phone: +212 607 076 940</li>
+            <li>Email: contact@zayna.ma</li>
+            <li>WhatsApp: +212 607 076 940</li>
             <li>Mon–Fri: 9:00–18:00</li>
           </ul>
         </div>
         <div>
-          <h4 className="font-semibold mb-3">Follow</h4>
-          <ul className="space-y-2 text-sm">
-            <li><a href="#" className="hover:underline">Instagram</a></li>
-            <li><a href="#" className="hover:underline">TikTok</a></li>
-            <li><a href="#" className="hover:underline">Facebook</a></li>
-          </ul>
+          <h4 className="font-semibold mb-3">Language</h4>
+          <div className="flex items-center gap-2">
+            <Button variant={locale === 'en' ? 'default' : 'outline'} size="sm" onClick={() => setLocale('en')}>EN</Button>
+            <Button variant={locale === 'fr' ? 'default' : 'outline'} size="sm" onClick={() => setLocale('fr')}>FR</Button>
+            <Button variant={locale === 'ar' ? 'default' : 'outline'} size="sm" onClick={() => setLocale('ar')}>AR</Button>
+          </div>
         </div>
       </div>
       <div className="py-4 border-t text-center text-xs text-muted-foreground">
-        © {new Date().getFullYear()} Coco Bloom. All rights reserved.
+        © {new Date().getFullYear()} zayna. All rights reserved.
       </div>
     </footer>
   );
