@@ -1,13 +1,22 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { Button } from "@/components/ui/button";
 
 const Index = () => {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
-      </div>
-    </div>
+    <main>
+      <section className="container mx-auto px-4 py-10 md:py-16">
+        <div className="grid md:grid-cols-2 gap-10 items-center animate-enter rounded-card bg-card p-6 md:p-10 shadow-soft">
+          <div>
+            <h1 className="font-head text-3xl md:text-5xl font-semibold mb-4">Your bio‑cosmetics storefront is almost ready</h1>
+            <p className="text-muted-foreground mb-6">Answer a few prompts so I can generate a beautiful Home page tailored to your brand.</p>
+            <div className="flex flex-wrap gap-3">
+              <Button variant="hero" size="xl" className="hover-scale">Provide Home content</Button>
+              <Button variant="chip" size="chip">Preview theme</Button>
+            </div>
+          </div>
+          <div className="h-56 md:h-72 rounded-card bg-secondary" aria-hidden />
+        </div>
+      </section>
+    </main>
   );
 };
 
