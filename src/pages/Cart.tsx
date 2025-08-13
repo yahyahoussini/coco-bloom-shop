@@ -15,119 +15,13 @@ import { toast } from "@/hooks/use-toast";
 import { track } from "@/lib/analytics";
 import { Minus, Plus, X } from "lucide-react";
 
-// i18n minimal setup
-const locales = ["en", "fr", "ar"] as const;
-export type Lang = typeof locales[number];
-const tDict: Record<Lang, Record<string, string>> = {
-  en: {
-    cart: "Cart",
-    empty: "Your cart is empty",
-    goShop: "Go to Shop",
-    bestsellers: "Bestsellers",
-    qty: "Qty",
-    remove: "Remove",
-    subtotal: "Subtotal",
-    discount: "Discount",
-    shipping: "Shipping",
-    vatIncluded: "VAT (included)",
-    total: "Total",
-    promoPlaceholder: "Promo code",
-    apply: "Apply",
-    removeCode: "Remove",
-    deliverySla: "48–72h nationwide; 72–96h for remote zones.",
-    codTitle: "Cash on Delivery",
-    fullName: "Full name",
-    phone: "Phone (+212)",
-    city: "City",
-    address: "Address",
-    notes: "Notes",
-    preferredTime: "Preferred time window",
-    consent: "I agree to the Privacy Policy and Terms.",
-    checkout: "Checkout (COD)",
-    orderWhatsapp: "Order via WhatsApp",
-    freeOver: "Free over 399 MAD",
-    toFree: "to free shipping",
-    incVatNote: "All prices include 20% VAT",
-    success: "Order placed",
-    trackOrder: "Track Order",
-    continue: "Continue shopping",
-  },
-  fr: {
-    cart: "Panier",
-    empty: "Votre panier est vide",
-    goShop: "Aller à la boutique",
-    bestsellers: "Meilleures ventes",
-    qty: "Qté",
-    remove: "Retirer",
-    subtotal: "Sous-total",
-    discount: "Remise",
-    shipping: "Livraison",
-    vatIncluded: "TVA (incluse)",
-    total: "Total",
-    promoPlaceholder: "Code promo",
-    apply: "Appliquer",
-    removeCode: "Supprimer",
-    deliverySla: "48–72h national; 72–96h zones éloignées.",
-    codTitle: "Paiement à la livraison",
-    fullName: "Nom complet",
-    phone: "Téléphone (+212)",
-    city: "Ville",
-    address: "Adresse",
-    notes: "Notes",
-    preferredTime: "Créneau préféré",
-    consent: "J'accepte la Politique de confidentialité et les Conditions.",
-    checkout: "Valider (COD)",
-    orderWhatsapp: "Commander via WhatsApp",
-    freeOver: "Gratuit dès 399 MAD",
-    toFree: "pour la livraison gratuite",
-    incVatNote: "Tous les prix incluent 20% de TVA",
-    success: "Commande passée",
-    trackOrder: "Suivre la commande",
-    continue: "Continuer vos achats",
-  },
-  ar: {
-    cart: "السلة",
-    empty: "سلتك فارغة",
-    goShop: "اذهب إلى المتجر",
-    bestsellers: "الأكثر مبيعًا",
-    qty: "الكمية",
-    remove: "إزالة",
-    subtotal: "الإجمالي الفرعي",
-    discount: "الخصم",
-    shipping: "الشحن",
-    vatIncluded: "الضريبة (مشمولة)",
-    total: "الإجمالي",
-    promoPlaceholder: "رمز التخفيض",
-    apply: "تطبيق",
-    removeCode: "حذف",
-    deliverySla: "48–72 ساعة محليًا؛ 72–96 ساعة للمناطق البعيدة.",
-    codTitle: "الدفع عند الاستلام",
-    fullName: "الاسم الكامل",
-    phone: "الهاتف (+212)",
-    city: "المدينة",
-    address: "العنوان",
-    notes: "ملاحظات",
-    preferredTime: "الوقت المفضل",
-    consent: "أوافق على سياسة الخصوصية والشروط.",
-    checkout: "الدفع (COD)",
-    orderWhatsapp: "الطلب عبر واتساب",
-    freeOver: "مجاني فوق 399 درهم",
-    toFree: "للحصول على شحن مجاني",
-    incVatNote: "جميع الأسعار تشمل 20% ضريبة",
-    success: "تم تقديم الطلب",
-    trackOrder: "تتبع الطلب",
-    continue: "متابعة التسوق",
-  },
-};
-
-function useI18n() {
-  const [lang, setLang] = useState<Lang>("fr");
-  const t = (k: string) => tDict[lang][k] ?? k;
-  return { lang, setLang, t, dir: lang === "ar" ? "rtl" : "ltr", locale: lang === "fr" ? "fr-MA" : lang === "ar" ? "ar-MA" : "en" };
-}
-
-function formatMAD(n: number, locale: string) {
-  return new Intl.NumberFormat(locale, { style: "currency", currency: "MAD", minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(n);
+function formatMAD(n: number) {
+  return new Intl.NumberFormat("en-US", { 
+    style: "currency", 
+    currency: "MAD", 
+    minimumFractionDigits: 0, 
+    maximumFractionDigits: 0 
+  }).format(n).replace("MAD", "").trim() + " MAD";
 }
 
 // Promo codes
@@ -161,7 +55,6 @@ function normalizePhone(p: string) {
 }
 
 export default function Cart() {
-  const { lang, setLang, t, dir, locale } = useI18n();
   const { items, itemsCount, subtotal, setQty, remove, clear } = useCart();
 
   // Enrich items with product data
@@ -177,7 +70,7 @@ export default function Cart() {
   }), [items]);
 
   useEffect(() => {
-    document.title = `${t("cart")} — Coco Bloom`;
+    document.title = "Cart — Coco Bloom";
     // Meta description
     let meta = document.querySelector('meta[name="description"]') as HTMLMetaElement | null;
     if (!meta) { meta = document.createElement('meta'); meta.name = 'description'; document.head.appendChild(meta); }
@@ -187,7 +80,7 @@ export default function Cart() {
     if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
     if (link) link.href = window.location.href;
     track({ name: "cart_view", payload: {} });
-  }, [t]);
+  }, []);
 
   // Promo state
   const [promoInput, setPromoInput] = useState("");
@@ -246,7 +139,7 @@ export default function Cart() {
     const code = `ORD-${date.toISOString().slice(0,10).replace(/-/g,"")}-${Math.floor(1000 + Math.random()*9000)}`;
     setSuccess({ code, name: data.fullName, phone: normalizePhone(data.phone) });
     track({ name: "cod_submit_success", payload: { orderCode: code, itemsCount, total } });
-    toast({ title: t("success"), description: code });
+    toast({ title: "Order placed", description: code });
     // Optionally clear cart or keep items until delivery; we keep for now.
     reset();
   };
@@ -287,22 +180,17 @@ export default function Cart() {
   const removeItem = (productId: string) => {
     remove(productId);
     track({ name: "remove_item", payload: { productId } });
-    toast({ title: t("remove"), description: productId });
+    toast({ title: "Item removed", description: productId });
   };
 
   const empty = itemsCount === 0;
 
   return (
-    <main className="container mx-auto px-4 py-4" dir={dir}>
+    <main className="container mx-auto px-4 py-4">
       {/* Header row */}
       <div className="sticky top-[56px] z-20 bg-background/80 backdrop-blur -mx-4 px-4 border-b">
         <div className="h-12 flex items-center justify-between">
-          <h1 className="font-head text-lg font-semibold">{t("cart")}</h1>
-          <div className="flex items-center gap-2">
-            <Button variant={lang==='fr'? 'hero':'chip'} size="chip" onClick={()=>setLang('fr')}>FR</Button>
-            <Button variant={lang==='en'? 'hero':'chip'} size="chip" onClick={()=>setLang('en')}>EN</Button>
-            <Button variant={lang==='ar'? 'hero':'chip'} size="chip" onClick={()=>setLang('ar')}>AR</Button>
-          </div>
+          <h1 className="font-head text-lg font-semibold">Cart</h1>
         </div>
       </div>
 
@@ -312,12 +200,12 @@ export default function Cart() {
             <div className="rounded-card bg-secondary aspect-square grid place-items-center">
               <span className="text-5xl">🛍️</span>
             </div>
-            <h2 className="mt-6 text-xl font-semibold">{t("empty")}</h2>
-            <div className="mt-4"><Link to="/shop"><Button variant="hero">{t("goShop")}</Button></Link></div>
+            <h2 className="mt-6 text-xl font-semibold">Your cart is empty</h2>
+            <div className="mt-4"><Link to="/shop"><Button variant="hero">Go to Shop</Button></Link></div>
           </div>
           {/* Cross-sell placeholder */}
           <div className="mt-10 text-left">
-            <h3 className="font-head text-lg font-semibold">{t("bestsellers")}</h3>
+            <h3 className="font-head text-lg font-semibold">Bestsellers</h3>
             <div className="mt-3 flex gap-4 overflow-x-auto pb-1">
               {products.slice(0,6).map(p => (
                 <Link key={p.id} to={`/product/${p.slug}`} className="min-w-[180px] rounded-card border p-3 shadow-soft">
@@ -325,7 +213,7 @@ export default function Cart() {
                     <img src={p.images[0]} alt={p.name} className="h-20" loading="lazy" />
                   </div>
                   <div className="mt-2 text-sm line-clamp-2">{p.name}</div>
-                  <div className="text-base font-semibold">{formatMAD(p.price, locale)}</div>
+                  <div className="text-base font-semibold">{formatMAD(p.price)}</div>
                 </Link>
               ))}
             </div>
@@ -353,7 +241,7 @@ export default function Cart() {
                       </div>
                     )}
                     <div className="mt-2 flex items-center justify-between">
-                      <div className="text-base font-semibold">{formatMAD(it.unitPrice, locale)}</div>
+                      <div className="text-base font-semibold">{formatMAD(it.unitPrice)}</div>
                       <div className="flex items-center gap-2">
                         <Button variant="outline" size="icon" aria-label="Decrease" onClick={()=>changeQty(it.productId,-1,it.qty)}><Minus/></Button>
                         <Input className="w-14 text-center" value={it.qty} onChange={e=>{
@@ -362,11 +250,11 @@ export default function Cart() {
                           track({ name: "qty_change", payload: { productId: it.productId, qty: v } });
                         }} />
                         <Button variant="outline" size="icon" aria-label="Increase" onClick={()=>changeQty(it.productId,1,it.qty)}><Plus/></Button>
-                        <Button variant="ghost" size="icon" aria-label={t("remove")} onClick={()=>removeItem(it.productId)}><X/></Button>
+                        <Button variant="ghost" size="icon" aria-label="Remove" onClick={()=>removeItem(it.productId)}><X/></Button>
                       </div>
                     </div>
                     <div className="mt-1 text-sm text-muted-foreground">
-                      Line: {formatMAD(it.unitPrice * it.qty, locale)}
+                      Line: {formatMAD(it.unitPrice * it.qty)}
                     </div>
                   </div>
                 </div>
@@ -382,15 +270,15 @@ export default function Cart() {
             <div className="rounded-card border p-4 shadow-soft">
               <h2 className="font-head text-lg font-semibold">Summary</h2>
               <div className="mt-3 space-y-2 text-sm">
-                <div className="flex justify-between"><span>{t("subtotal")}</span><span>{formatMAD(subtotalMAD, locale)}</span></div>
+                <div className="flex justify-between"><span>Subtotal</span><span>{formatMAD(subtotalMAD)}</span></div>
                 {appliedPromo && discount > 0 && (
-                  <div className="flex justify-between text-green-600"><span>{t("discount")} ({appliedPromo.code})</span><span>-{formatMAD(discount, locale)}</span></div>
+                  <div className="flex justify-between text-green-600"><span>Discount ({appliedPromo.code})</span><span>-{formatMAD(discount)}</span></div>
                 )}
-                <div className="flex justify-between"><span>{t("shipping")}</span><span>{formatMAD(shipping, locale)}</span></div>
-                <div className="flex justify-between text-muted-foreground"><span>{t("vatIncluded")}</span><span>{formatMAD(vatIncluded, locale)}</span></div>
+                <div className="flex justify-between"><span>Shipping</span><span>{formatMAD(shipping)}</span></div>
+                <div className="flex justify-between text-muted-foreground"><span>VAT (included)</span><span>{formatMAD(vatIncluded)}</span></div>
                 <Separator className="my-2" />
-                <div className="flex justify-between text-base font-semibold"><span>{t("total")}</span><span>{formatMAD(total, locale)}</span></div>
-                <div className="text-xs text-muted-foreground">{t("incVatNote")}</div>
+                <div className="flex justify-between text-base font-semibold"><span>Total</span><span>{formatMAD(total)}</span></div>
+                <div className="text-xs text-muted-foreground">All prices include 20% VAT</div>
               </div>
 
               {/* Free shipping progress */}
@@ -399,18 +287,18 @@ export default function Cart() {
                   <div className="h-2 rounded-full bg-secondary overflow-hidden">
                     <div className="h-full bg-primary" style={{ width: `${progress*100}%` }} />
                   </div>
-                  <div className="mt-1 text-xs text-muted-foreground">{formatMAD(freeThreshold - Math.max(0, subtotalMAD - (appliedPromo?discount:0)), locale)} {t("toFree")}</div>
+                  <div className="mt-1 text-xs text-muted-foreground">{formatMAD(freeThreshold - Math.max(0, subtotalMAD - (appliedPromo?discount:0)))} to free shipping</div>
                 </div>
               )}
 
               {/* Promo */}
               <div className="mt-4">
                 <div className="flex gap-2">
-                  <Input placeholder={t("promoPlaceholder")} value={promoInput} onChange={e=>setPromoInput(e.target.value)} className="rounded-pill" />
+                  <Input placeholder="Promo code" value={promoInput} onChange={e=>setPromoInput(e.target.value)} className="rounded-pill" />
                   {appliedPromo ? (
-                    <Button variant="secondary" onClick={removePromo}>{t("removeCode")}</Button>
+                    <Button variant="secondary" onClick={removePromo}>Remove</Button>
                   ) : (
-                    <Button variant="hero" onClick={applyPromo}>{t("apply")}</Button>
+                    <Button variant="hero" onClick={applyPromo}>Apply</Button>
                   )}
                 </div>
                 {promoError && <div className="mt-1 text-xs text-destructive" role="alert">{promoError}</div>}
@@ -418,46 +306,46 @@ export default function Cart() {
 
               {/* Info chips */}
               <div className="mt-4 flex flex-wrap gap-2 text-xs text-muted-foreground">
-                <span className="rounded-pill border px-2 py-1">{t("deliverySla")}</span>
+                <span className="rounded-pill border px-2 py-1">48–72h nationwide; 72–96h for remote zones.</span>
                 <span className="rounded-pill border px-2 py-1">COD</span>
               </div>
             </div>
 
             {/* Inline checkout */}
             <div className="mt-4 rounded-card border p-4 shadow-soft">
-              <h3 className="font-head text-lg font-semibold">{t("codTitle")}</h3>
+              <h3 className="font-head text-lg font-semibold">Cash on Delivery</h3>
               <form className="mt-3 grid gap-3" onSubmit={handleSubmit(onCheckout)}>
-                <Input aria-label={t("fullName")} placeholder={t("fullName")} {...register("fullName")} />
+                <Input aria-label="Full name" placeholder="Full name" {...register("fullName")} />
                 {errors.fullName && <span className="text-xs text-destructive">{errors.fullName.message as string}</span>}
-                <Input aria-label={t("phone")} placeholder={t("phone")} {...register("phone")} />
+                <Input aria-label="Phone (+212)" placeholder="Phone (+212)" {...register("phone")} />
                 {errors.phone && <span className="text-xs text-destructive">{errors.phone.message as string}</span>}
                 <div>
-                  <Input aria-label={t("city")} placeholder={t("city")} list="cities" {...register("city")} />
+                  <Input aria-label="City" placeholder="City" list="cities" {...register("city")} />
                   <datalist id="cities">
                     {CITIES.map(c => <option key={c} value={c} />)}
                   </datalist>
                 </div>
                 {errors.city && <span className="text-xs text-destructive">{errors.city.message as string}</span>}
-                <Textarea aria-label={t("address")} placeholder={t("address")} {...register("address")} />
+                <Textarea aria-label="Address" placeholder="Address" {...register("address")} />
                 {errors.address && <span className="text-xs text-destructive">{errors.address.message as string}</span>}
-                <Input aria-label={t("preferredTime")} placeholder={t("preferredTime")} {...register("preferredTime")} />
-                <Textarea aria-label={t("notes")} placeholder={t("notes")} {...register("notes")} />
+                <Input aria-label="Preferred time window" placeholder="Preferred time window" {...register("preferredTime")} />
+                <Textarea aria-label="Notes" placeholder="Notes" {...register("notes")} />
 
                 <label className="flex items-center gap-2 text-sm">
                   <Checkbox {...register("consent")} />
                   <span>
-                    {t("consent")} {" "}
+                    I agree to the Privacy Policy and Terms. {" "}
                     <a href="/privacy" target="_blank" className="underline">Privacy</a> · <a href="/terms" target="_blank" className="underline">Terms</a>
                   </span>
                 </label>
                 {errors.consent && <span className="text-xs text-destructive">{errors.consent.message as string}</span>}
 
                 <div className="grid sm:grid-cols-2 gap-2">
-                  <Button type="submit" variant="hero" disabled={isSubmitting}>{t("checkout")}</Button>
+                  <Button type="submit" variant="hero" disabled={isSubmitting}>Checkout (COD)</Button>
                   <Button type="button" variant="outline" onClick={()=>{
                     const url = buildWhatsappUrl();
                     window.open(url, "_blank");
-                  }}>{t("orderWhatsapp")}</Button>
+                  }}>Order via WhatsApp</Button>
                 </div>
               </form>
             </div>
@@ -469,11 +357,11 @@ export default function Cart() {
       {!empty && (
         <div className="fixed inset-x-0 bottom-0 z-20 border-t bg-background/90 backdrop-blur md:hidden">
           <div className="container mx-auto px-4 py-3 flex items-center gap-3">
-            <div className="text-lg font-semibold mr-auto">{formatMAD(total, locale)}</div>
+            <div className="text-lg font-semibold mr-auto">{formatMAD(total)}</div>
             <Button variant="hero" onClick={()=>{
               const form = document.querySelector("form");
               (form as HTMLFormElement | null)?.requestSubmit();
-            }}>{t("checkout")}</Button>
+            }}>Checkout</Button>
           </div>
         </div>
       )}
@@ -482,16 +370,16 @@ export default function Cart() {
       <Dialog open={!!success} onOpenChange={(o)=>{ if(!o) setSuccess(null); }}>
         <DialogContent className="rounded-[--radius-modal]">
           <DialogHeader>
-            <DialogTitle>{t("success")}</DialogTitle>
+            <DialogTitle>Order placed</DialogTitle>
             <DialogDescription>Order code: {success?.code}</DialogDescription>
           </DialogHeader>
           <div className="text-sm">We sent a confirmation to WhatsApp if provided.</div>
           <DialogFooter>
             <Link to={`/track-order?code=${encodeURIComponent(success?.code||"")}&phone=${encodeURIComponent(success?.phone||"")}`}>
-              <Button variant="secondary">{t("trackOrder")}</Button>
+              <Button variant="secondary">Track Order</Button>
             </Link>
             <Link to="/shop">
-              <Button variant="hero">{t("continue")}</Button>
+              <Button variant="hero">Continue shopping</Button>
             </Link>
           </DialogFooter>
         </DialogContent>
