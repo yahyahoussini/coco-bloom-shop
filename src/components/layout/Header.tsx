@@ -1,12 +1,15 @@
-import { ShoppingBag, Search, SlidersHorizontal } from "lucide-react";
+import { ShoppingBag, Search, SlidersHorizontal, Menu, X } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useCart } from "@/state/cart";
+import { useState } from "react";
 
 const Header = () => {
   const { itemsCount } = useCart();
   const location = useLocation();
   const onShop = location.pathname.startsWith("/shop");
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
     <header className="sticky top-0 z-30 bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b">
@@ -27,11 +30,11 @@ const Header = () => {
         </nav>
 
         <div className="flex items-center gap-2">
-          <Button variant="ghost" size="icon" aria-label="Search">
+          <Button variant="ghost" size="icon" aria-label="Search" className="hidden sm:flex">
             <Search className="h-4 w-4" />
           </Button>
           {onShop && (
-            <Button variant="ghost" size="icon" aria-label="Filters">
+            <Button variant="ghost" size="icon" aria-label="Filters" className="hidden sm:flex">
               <SlidersHorizontal className="h-4 w-4" />
             </Button>
           )}
@@ -45,6 +48,43 @@ const Header = () => {
               </span>
             )}
           </Link>
+
+          {/* Mobile menu */}
+          <Sheet open={isOpen} onOpenChange={setIsOpen}>
+            <SheetTrigger asChild>
+              <Button variant="ghost" size="icon" aria-label="Menu" className="md:hidden">
+                {isOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="right" className="w-64">
+              <nav className="flex flex-col gap-4 mt-8">
+                <Link to="/shop" className="text-lg py-2 story-link" onClick={() => setIsOpen(false)}>
+                  Shop
+                </Link>
+                <Link to="/blog" className="text-lg py-2 story-link" onClick={() => setIsOpen(false)}>
+                  Blog
+                </Link>
+                <Link to="/about" className="text-lg py-2 story-link" onClick={() => setIsOpen(false)}>
+                  About
+                </Link>
+                <Link to="/contact" className="text-lg py-2 story-link" onClick={() => setIsOpen(false)}>
+                  Contact
+                </Link>
+                <div className="mt-4 pt-4 border-t space-y-2">
+                  <Button variant="ghost" size="sm" className="w-full justify-start" aria-label="Search">
+                    <Search className="h-4 w-4 mr-2" />
+                    Search
+                  </Button>
+                  {onShop && (
+                    <Button variant="ghost" size="sm" className="w-full justify-start" aria-label="Filters">
+                      <SlidersHorizontal className="h-4 w-4 mr-2" />
+                      Filters
+                    </Button>
+                  )}
+                </div>
+              </nav>
+            </SheetContent>
+          </Sheet>
         </div>
       </div>
     </header>
