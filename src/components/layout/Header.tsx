@@ -28,14 +28,16 @@ const Header = () => {
 
         <div className="flex items-center gap-2">
           <Button variant="ghost" size="icon" aria-label="Search">
-            <Search className="" />
+            <Search className="h-4 w-4" />
           </Button>
-          <Button variant="ghost" size="icon" aria-label="Filters" className={onShop ? "" : "opacity-60"}>
-            <SlidersHorizontal />
-          </Button>
+          {onShop && (
+            <Button variant="ghost" size="icon" aria-label="Filters">
+              <SlidersHorizontal className="h-4 w-4" />
+            </Button>
+          )}
           <Link to="/cart" className="relative">
             <Button variant="ghost" size="icon" aria-label="Cart">
-              <ShoppingBag />
+              <ShoppingBag className="h-4 w-4" />
             </Button>
             {itemsCount > 0 && (
               <span className="absolute -top-1 -right-1 h-5 min-w-5 px-1 rounded-full bg-primary text-primary-foreground text-[11px] grid place-items-center">
