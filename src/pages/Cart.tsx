@@ -258,7 +258,7 @@ export default function Cart() {
       "Items:",
       ...enriched.map(it => {
         const lineTotal = it.unitPrice * it.qty;
-        const vars = it.variantSelections ? ` (${Object.entries(it.variantSelections).map(([k,v]=>`${k}:${v}`).join(", ")})` : "";
+        const vars = it.variantSelections ? ` (${Object.entries(it.variantSelections).map(([k,v]) => `${k}:${v}`).join(", ")})` : "";
         return `- ${it.name}${vars} x${it.qty} = ${lineTotal} MAD`;
       }),
       `Subtotal: ${subtotalMAD} MAD`,
