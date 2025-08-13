@@ -11,7 +11,7 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Separator } from "@/components/ui/separator";
 import { useCart } from "@/state/cart";
 import { products } from "@/data/products";
-import { toast } from "@/components/ui/use-toast";
+import { toast } from "@/hooks/use-toast";
 import { track } from "@/lib/analytics";
 import { Minus, Plus, X } from "lucide-react";
 
