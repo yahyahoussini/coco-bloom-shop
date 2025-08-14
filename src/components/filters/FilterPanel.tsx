@@ -19,10 +19,10 @@ interface Props {
 }
 
 const sortOptions: { key: SortKey; label: string }[] = [
-  { key: "best", label: "Best Selling" },
-  { key: "new", label: "Newest" },
-  { key: "priceAsc", label: "Price: Low→High" },
-  { key: "priceDesc", label: "Price: High→Low" },
+  { key: "best", label: "Meilleures Ventes" },
+  { key: "new", label: "Nouveautés" },
+  { key: "priceAsc", label: "Prix: Croissant" },
+  { key: "priceDesc", label: "Prix: Décroissant" },
 ];
 
 const FilterPanel = ({ value, onChange, onApply, onReset }: Props) => {
@@ -31,7 +31,7 @@ const FilterPanel = ({ value, onChange, onApply, onReset }: Props) => {
   return (
     <div className="space-y-6">
       <div>
-        <h4 className="font-semibold mb-2">Sort</h4>
+        <h4 className="font-semibold mb-2">Trier</h4>
         <div className="flex gap-2 overflow-x-auto">
           {sortOptions.map(o => (
             <Button key={o.key} variant={value.sort === o.key ? "hero" : "chip"} size="chip" onClick={() => set({ sort: o.key })}>
@@ -42,9 +42,9 @@ const FilterPanel = ({ value, onChange, onApply, onReset }: Props) => {
       </div>
 
       <div>
-        <h4 className="font-semibold mb-2">Categories</h4>
+        <h4 className="font-semibold mb-2">Catégories</h4>
         <div className="flex gap-2 overflow-x-auto">
-          <Button variant={!value.category ? "hero" : "chip"} size="chip" onClick={() => set({ category: null })}>All</Button>
+          <Button variant={!value.category ? "hero" : "chip"} size="chip" onClick={() => set({ category: null })}>Tous</Button>
           {categories.map(cat => (
             <Button key={cat} variant={value.category === cat ? "hero" : "chip"} size="chip" onClick={() => set({ category: cat })}>
               {cat}
@@ -54,12 +54,12 @@ const FilterPanel = ({ value, onChange, onApply, onReset }: Props) => {
       </div>
 
       <div className="grid gap-3">
-        <Input placeholder="Product Name" value={value.name} onChange={e => set({ name: e.target.value })} aria-label="Product Name" />
-        <Input placeholder="Product Code (SKU)" value={value.code} onChange={e => set({ code: e.target.value })} aria-label="Product Code" />
+        <Input placeholder="Nom du Produit" value={value.name} onChange={e => set({ name: e.target.value })} aria-label="Nom du Produit" />
+        <Input placeholder="Code Produit (SKU)" value={value.code} onChange={e => set({ code: e.target.value })} aria-label="Code Produit" />
       </div>
 
       <div>
-        <h4 className="font-semibold mb-2">Price Range</h4>
+        <h4 className="font-semibold mb-2">Gamme de Prix</h4>
         <div className="flex gap-2 flex-wrap">
           {priceRanges.map(r => {
             const selected = value.price?.min === r.min && value.price?.max === r.max;
@@ -74,8 +74,8 @@ const FilterPanel = ({ value, onChange, onApply, onReset }: Props) => {
 
       <Separator />
       <div className="flex items-center justify-between gap-3">
-        <Button variant="outline" onClick={onReset}>Reset</Button>
-        <Button variant="hero" onClick={onApply}>Apply</Button>
+        <Button variant="outline" onClick={onReset}>Réinitialiser</Button>
+        <Button variant="hero" onClick={onApply}>Appliquer</Button>
       </div>
     </div>
   );

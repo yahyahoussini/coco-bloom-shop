@@ -6,11 +6,11 @@ const Index = () => {
       <section className="container mx-auto px-4 py-10 md:py-16">
         <div className="grid md:grid-cols-2 gap-10 items-center animate-enter rounded-card bg-card p-6 md:p-10 shadow-soft">
           <div>
-            <h1 className="font-head text-3xl md:text-5xl font-semibold mb-4">Your bio‑cosmetics storefront is almost ready</h1>
-            <p className="text-muted-foreground mb-6">Answer a few prompts so I can generate a beautiful Home page tailored to your brand.</p>
+            <h1 className="font-head text-3xl md:text-5xl font-semibold mb-4">Votre boutique bio‑cosmétiques est presque prête</h1>
+            <p className="text-muted-foreground mb-6">Répondez à quelques questions pour générer une belle page d'accueil adaptée à votre marque.</p>
             <div className="flex flex-wrap gap-3">
-              <Button variant="hero" size="xl" className="hover-scale">Provide Home content</Button>
-              <Button variant="chip" size="chip">Preview theme</Button>
+              <Button variant="hero" size="xl" className="hover-scale">Fournir le contenu</Button>
+              <Button variant="chip" size="chip">Aperçu du thème</Button>
             </div>
           </div>
           <div className="h-56 md:h-72 rounded-card bg-secondary" aria-hidden />

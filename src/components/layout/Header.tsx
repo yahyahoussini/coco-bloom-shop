@@ -23,23 +23,23 @@ const Header = () => {
         </Link>
 
         <nav className="hidden md:flex items-center gap-6 text-sm">
-          <Link to="/shop" className="story-link">Shop</Link>
+          <Link to="/shop" className="story-link">Boutique</Link>
           <Link to="/blog" className="story-link">Blog</Link>
-          <Link to="/about" className="story-link">About</Link>
+          <Link to="/about" className="story-link">À Propos</Link>
           <Link to="/contact" className="story-link">Contact</Link>
         </nav>
 
         <div className="flex items-center gap-2">
-          <Button variant="ghost" size="icon" aria-label="Search" className="hidden sm:flex">
+          <Button variant="ghost" size="icon" aria-label="Rechercher" className="hidden sm:flex">
             <Search className="h-4 w-4" />
           </Button>
           {onShop && (
-            <Button variant="ghost" size="icon" aria-label="Filters" className="hidden sm:flex">
+            <Button variant="ghost" size="icon" aria-label="Filtres" className="hidden sm:flex">
               <SlidersHorizontal className="h-4 w-4" />
             </Button>
           )}
           <Link to="/cart" className="relative">
-            <Button variant="ghost" size="icon" aria-label="Cart">
+            <Button variant="ghost" size="icon" aria-label="Panier">
               <ShoppingBag className="h-4 w-4" />
             </Button>
             {itemsCount > 0 && (
@@ -59,26 +59,26 @@ const Header = () => {
             <SheetContent side="right" className="w-64">
               <nav className="flex flex-col gap-4 mt-8">
                 <Link to="/shop" className="text-lg py-2 story-link" onClick={() => setIsOpen(false)}>
-                  Shop
+                  Boutique
                 </Link>
                 <Link to="/blog" className="text-lg py-2 story-link" onClick={() => setIsOpen(false)}>
                   Blog
                 </Link>
                 <Link to="/about" className="text-lg py-2 story-link" onClick={() => setIsOpen(false)}>
-                  About
+                  À Propos
                 </Link>
                 <Link to="/contact" className="text-lg py-2 story-link" onClick={() => setIsOpen(false)}>
                   Contact
                 </Link>
                 <div className="mt-4 pt-4 border-t space-y-2">
-                  <Button variant="ghost" size="sm" className="w-full justify-start" aria-label="Search">
+                  <Button variant="ghost" size="sm" className="w-full justify-start" aria-label="Rechercher">
                     <Search className="h-4 w-4 mr-2" />
-                    Search
+                    Rechercher
                   </Button>
                   {onShop && (
-                    <Button variant="ghost" size="sm" className="w-full justify-start" aria-label="Filters">
+                    <Button variant="ghost" size="sm" className="w-full justify-start" aria-label="Filtres">
                       <SlidersHorizontal className="h-4 w-4 mr-2" />
-                      Filters
+                      Filtres
                     </Button>
                   )}
                 </div>

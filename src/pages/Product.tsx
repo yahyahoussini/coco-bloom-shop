@@ -19,10 +19,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 const phoneRegex = /^\+212[5-7]\d{8}$/; // Morocco mobile/phone (simplified)
 const CodSchema = z.object({
-  fullName: z.string().min(2, "Full name is required"),
-  phone: z.string().regex(phoneRegex, "Use +212 format e.g. +2126XXXXXXXX"),
-  city: z.string().min(2, "City is required"),
-  address: z.string().min(5, "Address is required"),
+  fullName: z.string().min(2, "Nom complet requis"),
+  phone: z.string().regex(phoneRegex, "Utilisez le format +212 ex: +2126XXXXXXXX"),
+  city: z.string().min(2, "Ville requise"),
+  address: z.string().min(5, "Adresse requise"),
   notes: z.string().optional(),
   preferredTime: z.string().optional(),
 });
@@ -35,22 +35,22 @@ function QuestionModal({ productName }: { productName: string }) {
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!question.trim()) return;
-    toast({ title: "Question sent", description: "We'll get back to you soon." });
+    toast({ title: "Question envoyée", description: "Nous vous répondrons rapidement." });
     setOpen(false);
     setQuestion("");
   };
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <Button variant="chip" size="chip" onClick={() => setOpen(true)}>Ask a question</Button>
+      <Button variant="chip" size="chip" onClick={() => setOpen(true)}>Poser une question</Button>
       <DialogContent className="rounded-[--radius-modal]">
         <DialogHeader>
-          <DialogTitle>Ask about {productName}</DialogTitle>
-          <DialogDescription>We usually reply within 24h.</DialogDescription>
+          <DialogTitle>Question sur {productName}</DialogTitle>
+          <DialogDescription>Nous répondons généralement sous 24h.</DialogDescription>
         </DialogHeader>
         <form onSubmit={onSubmit} className="grid gap-3">
-          <Textarea value={question} onChange={(e)=>setQuestion(e.target.value)} placeholder="Type your question..." aria-label="Your question" />
+          <Textarea value={question} onChange={(e)=>setQuestion(e.target.value)} placeholder="Tapez votre question..." aria-label="Votre question" />
           <DialogFooter>
-            <Button type="submit" variant="hero" disabled={!question.trim()}>Send</Button>
+            <Button type="submit" variant="hero" disabled={!question.trim()}>Envoyer</Button>
           </DialogFooter>
         </form>
       </DialogContent>
@@ -97,14 +97,14 @@ const Product = () => {
   if (!product) {
     return (
       <main className="container mx-auto px-4 py-10">
-        <h1 className="font-head text-2xl font-semibold mb-2">Product not found</h1>
-        <p className="text-muted-foreground">The product you are looking for does not exist.</p>
-        <div className="mt-6"><Link to="/shop" className="underline">Back to Shop</Link></div>
+        <h1 className="font-head text-2xl font-semibold mb-2">Produit introuvable</h1>
+        <p className="text-muted-foreground">Le produit que vous recherchez n'existe pas.</p>
+        <div className="mt-6"><Link to="/shop" className="underline">Retour à la Boutique</Link></div>
       </main>
     );
   }
 
-  const price = `$${product.price.toFixed(0)}`;
+  const price = `${product.price} MAD`;
   const rating = { value: 4.6, count: 128 }; // mock
 
   const canAdd = product.variants ? product.variants.every(v => selections[v.id]) : true;
@@ -117,7 +117,7 @@ const Product = () => {
   const onAddToCart = () => {
     if (!canAdd) return;
     add({ productId: product.id, qty, unitPrice: product.price, variantSelections: selections });
-    toast({ title: "Added to cart", description: product.name });
+    toast({ title: "Ajouté au panier", description: product.name });
     track({ name: "add_to_cart", payload: { productId: product.id, qty, variants: selections } });
   };
 
@@ -127,10 +127,10 @@ const Product = () => {
   };
 
   const whatsappText = encodeURIComponent([
-    `Hello, I'd like to order:`,
+    `Bonjour, je souhaite commander:`,
     `${product.name}${product.volume ? ` · ${product.volume}` : ""}`,
     product.variants ? `Options: ${product.variants.map(v => `${v.name}: ${selections[v.id] || "-"}`).join(", ")}` : undefined,
-    `Qty: ${qty}`,
+    `Qté: ${qty}`,
   ].filter(Boolean).join("\n"));
   const whatsappUrl = `https://wa.me/212607076940?text=${whatsappText}`;
 
@@ -213,12 +213,12 @@ const Product = () => {
 
           {/* Badges */}
           <div className="mt-3 flex flex-wrap gap-2">
-            <Badge variant="secondary" className="rounded-pill"><CheckCircle2 className="mr-1" size={14}/> In Stock</Badge>
-            {product.tags.includes("vegan") && (
-              <Badge variant="secondary" className="rounded-pill"><Leaf className="mr-1" size={14}/> Vegan</Badge>
+            <Badge variant="secondary" className="rounded-pill"><CheckCircle2 className="mr-1" size={14}/> En Stock</Badge>
+            {product.tags.includes("végan") && (
+              <Badge variant="secondary" className="rounded-pill"><Leaf className="mr-1" size={14}/> Végan</Badge>
             )}
             {product.specs?.some(s => /dermatologist/i.test(s)) && (
-              <Badge variant="secondary" className="rounded-pill"><ShieldCheck className="mr-1" size={14}/> Dermatologically Tested</Badge>
+              <Badge variant="secondary" className="rounded-pill"><ShieldCheck className="mr-1" size={14}/> Testé Dermatologiquement</Badge>
             )}
           </div>
 
@@ -242,19 +242,19 @@ const Product = () => {
 
           {/* Quantity */}
           <div className="mt-6">
-            <div className="text-sm font-medium mb-2">Quantity</div>
+            <div className="text-sm font-medium mb-2">Quantité</div>
             <div className="flex items-center gap-2">
-              <Button variant="outline" size="icon" aria-label="Decrease" onClick={() => setQty(q => Math.max(1, q - 1))}><Minus/></Button>
-              <Input className="w-16 text-center" value={qty} onChange={e => setQty(Math.max(1, parseInt(e.target.value || '1')))} aria-label="Quantity" />
-              <Button variant="outline" size="icon" aria-label="Increase" onClick={() => setQty(q => q + 1)}><Plus/></Button>
+              <Button variant="outline" size="icon" aria-label="Diminuer" onClick={() => setQty(q => Math.max(1, q - 1))}><Minus/></Button>
+              <Input className="w-16 text-center" value={qty} onChange={e => setQty(Math.max(1, parseInt(e.target.value || '1')))} aria-label="Quantité" />
+              <Button variant="outline" size="icon" aria-label="Augmenter" onClick={() => setQty(q => q + 1)}><Plus/></Button>
             </div>
           </div>
 
           {/* Primary actions */}
           <div className="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-3">
-            <Button variant="hero" onClick={openBuyNow} disabled={!canAdd}>Buy Now</Button>
-            <Button variant="secondary" onClick={onAddToCart} disabled={!canAdd}>Add to Cart</Button>
-            <Button variant="outline" onClick={onWhatsapp}>Order via WhatsApp</Button>
+            <Button variant="hero" onClick={openBuyNow} disabled={!canAdd}>Acheter Maintenant</Button>
+            <Button variant="secondary" onClick={onAddToCart} disabled={!canAdd}>Ajouter au Panier</Button>
+            <Button variant="outline" onClick={onWhatsapp}>Commander via WhatsApp</Button>
           </div>
         </div>
       </section>
@@ -327,7 +327,7 @@ const Product = () => {
                 <img src={p.images[0]} alt={p.name} className="h-24" loading="lazy" />
               </div>
               <div className="mt-3 text-sm line-clamp-2">{p.name}{p.volume ? ` · ${p.volume}` : ""}</div>
-              <div className="text-base font-semibold">${p.price.toFixed(0)}</div>
+              <div className="text-base font-semibold">{p.price} MAD</div>
             </Link>
           ))}
         </div>
@@ -378,8 +378,8 @@ const Product = () => {
       <div className="fixed inset-x-0 bottom-0 z-20 border-t bg-background/90 backdrop-blur md:hidden">
         <div className="container mx-auto px-4 py-3 flex items-center gap-3">
           <div className="text-lg font-semibold mr-auto">{price}</div>
-          <Button variant="secondary" onClick={onAddToCart} disabled={!canAdd}>Add to Cart</Button>
-          <Button variant="hero" onClick={openBuyNow} disabled={!canAdd}>Buy Now</Button>
+          <Button variant="secondary" onClick={onAddToCart} disabled={!canAdd}>Ajouter au Panier</Button>
+          <Button variant="hero" onClick={openBuyNow} disabled={!canAdd}>Acheter Maintenant</Button>
         </div>
       </div>
 

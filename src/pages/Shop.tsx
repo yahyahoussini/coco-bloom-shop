@@ -26,7 +26,7 @@ const Shop = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    document.title = "Shop — Coco Bloom";
+    document.title = "Boutique — Coco Bloom";
     const t = setTimeout(() => setLoading(false), 400);
     return () => clearTimeout(t);
   }, []);
@@ -71,7 +71,7 @@ const Shop = () => {
           <Button variant="ghost" size="icon" aria-label="Back" className="md:hidden" onClick={() => navigate(-1)}>
             <ChevronLeft />
           </Button>
-          <h1 className="font-head text-lg font-semibold">Shop</h1>
+          <h1 className="font-head text-lg font-semibold">Boutique</h1>
           <span className="w-10" />
         </div>
       </div>
@@ -82,7 +82,7 @@ const Shop = () => {
           <Search className="absolute left-3 top-1/2 -translate-y-1/2" size={18} />
           <Input
             aria-label="Search"
-            placeholder="Search…"
+            placeholder="Rechercher…"
             className="pl-9 rounded-pill"
             value={q}
             onChange={e => setQ(e.target.value)}
@@ -105,8 +105,8 @@ const Shop = () => {
           {/* Active filters chip */}
           {activeCount > 0 && (
             <div className="mb-4 flex items-center gap-3">
-              <Button variant="chip" size="chip">{activeCount} filters active</Button>
-              <button className="text-sm underline" onClick={reset}>Clear</button>
+              <Button variant="chip" size="chip">{activeCount} filtres actifs</Button>
+              <button className="text-sm underline" onClick={reset}>Effacer</button>
             </div>
           )}
 
@@ -123,9 +123,9 @@ const Shop = () => {
             </div>
           ) : filtered.length === 0 ? (
             <div className="text-center py-20">
-              <div className="text-muted-foreground">No products match your filters</div>
+              <div className="text-muted-foreground">Aucun produit ne correspond à vos filtres</div>
               <div className="mt-4">
-                <Button variant="outline" onClick={reset}>Clear filters</Button>
+                <Button variant="outline" onClick={reset}>Effacer les filtres</Button>
               </div>
             </div>
           ) : (
@@ -137,7 +137,7 @@ const Shop = () => {
               </div>
               {visible < filtered.length && (
                 <div className="flex justify-center mt-8">
-                  <Button variant="hero" onClick={showMore}>Load more</Button>
+                  <Button variant="hero" onClick={showMore}>Charger plus</Button>
                 </div>
               )}
             </>
@@ -149,7 +149,7 @@ const Shop = () => {
       <Sheet open={openSheet} onOpenChange={setOpenSheet}>
         <SheetContent side="bottom" className="rounded-t-[--radius-modal]">
           <SheetHeader>
-            <SheetTitle>Filters</SheetTitle>
+            <SheetTitle>Filtres</SheetTitle>
           </SheetHeader>
           <div className="mt-4">
             <FilterPanel value={filters} onChange={setFilters} onReset={reset} onApply={applyMobile} />

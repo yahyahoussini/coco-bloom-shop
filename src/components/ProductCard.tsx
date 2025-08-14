@@ -21,7 +21,7 @@ const ProductCard = ({ product }: Props) => {
       return;
     }
     add({ productId: product.id, qty: 1, unitPrice: product.price });
-    toast({ title: "Added to cart", description: product.name });
+    toast({ title: "Ajouté au panier", description: product.name });
   };
 
   return (
@@ -33,7 +33,7 @@ const ProductCard = ({ product }: Props) => {
               <img src={product.images[0]} alt={product.name} className="h-24" loading="lazy" />
             </div>
           </Link>
-          <Button variant="circle" size="icon" aria-label="Add to cart" className="absolute -bottom-3 -right-2" onClick={handleAdd}>
+          <Button variant="circle" size="icon" aria-label="Ajouter au panier" className="absolute -bottom-3 -right-2" onClick={handleAdd}>
             <Plus />
           </Button>
         </div>
@@ -41,7 +41,7 @@ const ProductCard = ({ product }: Props) => {
           <Link to={`/product/${product.slug}`} className="block">
             <div className="text-sm line-clamp-2">{product.name}{product.volume ? ` · ${product.volume}` : ""}</div>
           </Link>
-          <div className="text-base font-semibold">${product.price.toFixed(0)}</div>
+          <div className="text-base font-semibold">{product.price} MAD</div>
         </div>
       </CardContent>
 

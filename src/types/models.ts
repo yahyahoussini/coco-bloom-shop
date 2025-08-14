@@ -1,6 +1,6 @@
 export type Variant = { id: string; name: string; options: string[] };
 export type Product = {
-  id: string; slug: string; name: string; subtitle?: string; price: number; currency: "USD";
+  id: string; slug: string; name: string; subtitle?: string; price: number; currency: "MAD";
   images: string[]; // placeholder URLs
   variants?: Variant[]; // e.g., Size, Scent
   description: string; specs?: string[];

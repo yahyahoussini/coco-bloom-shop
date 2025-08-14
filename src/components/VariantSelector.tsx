@@ -34,7 +34,7 @@ const VariantSelector = ({ product, open, onOpenChange }: Props) => {
   const apply = () => {
     if (!canAdd) return;
     add({ productId: product.id, qty, unitPrice: product.price, variantSelections: selections });
-    toast({ title: "Added to cart", description: product.name });
+    toast({ title: "Ajouté au panier", description: product.name });
     onOpenChange(false);
   };
 
@@ -42,7 +42,7 @@ const VariantSelector = ({ product, open, onOpenChange }: Props) => {
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent side="bottom" className="rounded-t-[--radius-modal]">
         <SheetHeader>
-          <SheetTitle>Select options</SheetTitle>
+          <SheetTitle>Sélectionner les options</SheetTitle>
         </SheetHeader>
         <div className="mt-4 space-y-6">
           {product.variants?.map(v => (
@@ -58,7 +58,7 @@ const VariantSelector = ({ product, open, onOpenChange }: Props) => {
             </div>
           ))}
           <div className="space-y-2">
-            <div className="text-sm font-medium">Quantity</div>
+            <div className="text-sm font-medium">Quantité</div>
             <div className="flex gap-2 items-center">
               <Button variant="outline" onClick={() => setQty(q => Math.max(1, q - 1))}>-</Button>
               <Input className="w-16 text-center" value={qty} onChange={e => setQty(Math.max(1, parseInt(e.target.value || '1')))} />
@@ -66,7 +66,7 @@ const VariantSelector = ({ product, open, onOpenChange }: Props) => {
             </div>
           </div>
           <div className="pt-2">
-            <Button variant="hero" className="w-full" disabled={!canAdd} onClick={apply}>Add to Cart</Button>
+            <Button variant="hero" className="w-full" disabled={!canAdd} onClick={apply}>Ajouter au Panier</Button>
           </div>
         </div>
       </SheetContent>
