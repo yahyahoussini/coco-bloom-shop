@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import { products } from "@/data/products";
+import { useProducts, useProduct } from "@/hooks/useProducts";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -60,7 +60,8 @@ function QuestionModal({ productName }: { productName: string }) {
 
 const Product = () => {
   const { slug } = useParams();
-  const product = useMemo(() => products.find(p => p.slug === slug), [slug]);
+  const { product, loading: productLoading } = useProduct(slug || '');
+  const { products } = useProducts(); // For related products
   const add = useCart(s => s.add);
 
   const [selections, setSelections] = useState<Record<string, string>>({});
@@ -93,6 +94,14 @@ const Product = () => {
       if (link) link.href = window.location.href;
     }
   }, [product]);
+
+  if (productLoading) {
+    return (
+      <main className="container mx-auto px-4 py-10">
+        <div className="text-center">Chargement du produit...</div>
+      </main>
+    );
+  }
 
   if (!product) {
     return (

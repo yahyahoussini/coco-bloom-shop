@@ -7,7 +7,7 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sh
 import { Skeleton } from "@/components/ui/skeleton";
 import ProductCard from "@/components/ProductCard";
 import FilterPanel, { type Filters } from "@/components/filters/FilterPanel";
-import { products as allProducts } from "@/data/products";
+import { useProducts } from "@/hooks/useProducts";
 
 const initialFilters: Filters = {
   sort: "best",
@@ -19,6 +19,7 @@ const initialFilters: Filters = {
 
 const Shop = () => {
   const navigate = useNavigate();
+  const { products: allProducts, loading: productsLoading } = useProducts();
   const [q, setQ] = useState("");
   const [filters, setFilters] = useState<Filters>(initialFilters);
   const [openSheet, setOpenSheet] = useState(false);
@@ -30,6 +31,8 @@ const Shop = () => {
     const t = setTimeout(() => setLoading(false), 400);
     return () => clearTimeout(t);
   }, []);
+
+  const isLoading = loading || productsLoading;
 
   const filtered = useMemo(() => {
     let list = [...allProducts];
@@ -111,7 +114,7 @@ const Shop = () => {
           )}
 
           {/* Grid */}
-          {loading ? (
+          {isLoading ? (
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
               {Array.from({ length: 8 }).map((_, i) => (
                 <div key={i} className="rounded-card border p-4">
