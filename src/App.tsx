@@ -11,6 +11,11 @@ import Shop from "./pages/Shop";
 import Product from "./pages/Product";
 import TrackOrder from "./pages/TrackOrder";
 import Cart from "./pages/Cart";
+import { AdminLayout } from "@/components/admin/AdminLayout";
+import AdminLogin from "@/pages/admin/AdminLogin";
+import Dashboard from "@/pages/admin/Dashboard";
+import Products from "@/pages/admin/Products";
+import Orders from "@/pages/admin/Orders";
 
 const queryClient = new QueryClient();
 
@@ -20,21 +25,37 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        <Header />
         <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/shop" element={<Shop />} />
-          <Route path="/product/:slug" element={<Product />} />
-          <Route path="/track-order" element={<TrackOrder />} />
-          <Route path="/cart" element={<Cart />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
+          {/* Admin Routes */}
+          <Route path="/admin/login" element={<AdminLogin />} />
+          <Route path="/admin" element={<AdminLayout />}>
+            <Route index element={<Dashboard />} />
+            <Route path="products" element={<Products />} />
+            <Route path="orders" element={<Orders />} />
+            <Route path="customers" element={<div className="p-8 text-center">Customers management coming soon...</div>} />
+            <Route path="analytics" element={<div className="p-8 text-center">Analytics dashboard coming soon...</div>} />
+            <Route path="settings" element={<div className="p-8 text-center">Admin settings coming soon...</div>} />
+          </Route>
+
+          {/* Public Routes */}
+          <Route path="/*" element={
+            <>
+              <Header />
+              <Routes>
+                <Route path="/" element={<Index />} />
+                <Route path="/shop" element={<Shop />} />
+                <Route path="/product/:slug" element={<Product />} />
+                <Route path="/track-order" element={<TrackOrder />} />
+                <Route path="/cart" element={<Cart />} />
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+              <Footer />
+            </>
+          } />
         </Routes>
-        <Footer />
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
 );
-
 
 export default App;
