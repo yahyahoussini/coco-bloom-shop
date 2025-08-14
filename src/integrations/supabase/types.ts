@@ -14,13 +14,168 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      order_items: {
+        Row: {
+          created_at: string | null
+          id: string
+          order_id: string | null
+          product_id: string | null
+          product_name: string
+          quantity: number
+          total_price: number
+          unit_price: number
+          variant_selections: Json | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          order_id?: string | null
+          product_id?: string | null
+          product_name: string
+          quantity?: number
+          total_price: number
+          unit_price: number
+          variant_selections?: Json | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          order_id?: string | null
+          product_id?: string | null
+          product_name?: string
+          quantity?: number
+          total_price?: number
+          unit_price?: number
+          variant_selections?: Json | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "order_items_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "order_items_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      orders: {
+        Row: {
+          address: string | null
+          code: string
+          created_at: string | null
+          customer_name: string | null
+          email: string | null
+          id: string
+          phone: string
+          shipping: number
+          status: string | null
+          subtotal: number
+          tax: number
+          total: number
+          updated_at: string | null
+        }
+        Insert: {
+          address?: string | null
+          code: string
+          created_at?: string | null
+          customer_name?: string | null
+          email?: string | null
+          id?: string
+          phone: string
+          shipping?: number
+          status?: string | null
+          subtotal?: number
+          tax?: number
+          total?: number
+          updated_at?: string | null
+        }
+        Update: {
+          address?: string | null
+          code?: string
+          created_at?: string | null
+          customer_name?: string | null
+          email?: string | null
+          id?: string
+          phone?: string
+          shipping?: number
+          status?: string | null
+          subtotal?: number
+          tax?: number
+          total?: number
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      products: {
+        Row: {
+          created_at: string | null
+          currency: string | null
+          description: string
+          id: string
+          images: string[] | null
+          in_stock: boolean | null
+          name: string
+          price: number
+          slug: string
+          specs: string[] | null
+          subtitle: string | null
+          tags: string[] | null
+          updated_at: string | null
+          variants: Json | null
+          volume: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          currency?: string | null
+          description: string
+          id?: string
+          images?: string[] | null
+          in_stock?: boolean | null
+          name: string
+          price: number
+          slug: string
+          specs?: string[] | null
+          subtitle?: string | null
+          tags?: string[] | null
+          updated_at?: string | null
+          variants?: Json | null
+          volume?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          currency?: string | null
+          description?: string
+          id?: string
+          images?: string[] | null
+          in_stock?: boolean | null
+          name?: string
+          price?: number
+          slug?: string
+          specs?: string[] | null
+          subtitle?: string | null
+          tags?: string[] | null
+          updated_at?: string | null
+          variants?: Json | null
+          volume?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      generate_order_code: {
+        Args: Record<PropertyKey, never>
+        Returns: string
+      }
     }
     Enums: {
       [_ in never]: never
