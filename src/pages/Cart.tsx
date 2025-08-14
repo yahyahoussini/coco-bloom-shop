@@ -10,7 +10,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
 import { useCart } from "@/state/cart";
-import { products } from "@/data/products";
+import { useProducts } from "@/hooks/useProducts";
 import { toast } from "@/hooks/use-toast";
 import { track } from "@/lib/analytics";
 import { Minus, Plus, X } from "lucide-react";
@@ -56,18 +56,22 @@ function normalizePhone(p: string) {
 
 export default function Cart() {
   const { items, itemsCount, subtotal, setQty, remove, clear } = useCart();
+  const { products } = useProducts();
 
   // Enrich items with product data
-  const enriched = useMemo(() => items.map(it => {
-    const p = products.find(pp => pp.id === it.productId);
-    return {
-      ...it,
-      name: p?.name || it.productId,
-      slug: p?.slug || "",
-      image: p?.images?.[0] || "/placeholder.svg",
-      inStock: p?.inStock ?? true,
-    };
-  }), [items]);
+  const enriched = useMemo(() => {
+    if (!products.length) return [];
+    return items.map(it => {
+      const p = products.find(pp => pp.id === it.productId);
+      return {
+        ...it,
+        name: p?.name || it.productId,
+        slug: p?.slug || "",
+        image: p?.images?.[0] || "/placeholder.svg",
+        inStock: p?.inStock ?? true,
+      };
+    })
+  }, [items, products]);
 
   useEffect(() => {
     document.title = "Cart — Coco Bloom";
@@ -207,7 +211,7 @@ export default function Cart() {
           <div className="mt-10 text-left">
             <h3 className="font-head text-lg font-semibold">Bestsellers</h3>
             <div className="mt-3 flex gap-4 overflow-x-auto pb-1">
-              {products.slice(0,6).map(p => (
+              {products.length > 0 && products.slice(0,6).map(p => (
                 <Link key={p.id} to={`/product/${p.slug}`} className="min-w-[180px] rounded-card border p-3 shadow-soft">
                   <div className="rounded-card bg-secondary aspect-square grid place-items-center overflow-hidden">
                     <img src={p.images[0]} alt={p.name} className="h-20" loading="lazy" />
