@@ -130,7 +130,7 @@ export default function Cart() {
 
   const removePromo = () => setAppliedPromo(null);
 
-  const { register, handleSubmit, formState: { errors, isSubmitting }, reset, watch, setValue } = useForm<CodForm>({ resolver: zodResolver(CodSchema), defaultValues: { consent: false } as any });
+  const { register, handleSubmit, formState: { errors, isSubmitting }, reset, watch, setValue } = useForm<CodForm>({ resolver: zodResolver(CodSchema), defaultValues: { consent: true } as any });
 
   const onCheckout = async (data: CodForm) => {
     track({ name: "checkout_click", payload: { method: "cod" } });
@@ -332,7 +332,7 @@ export default function Cart() {
                 <Textarea aria-label="Notes" placeholder="Notes" {...register("notes")} />
 
                 <label className="flex items-center gap-2 text-sm">
-                  <Checkbox {...register("consent")} />
+                  <Checkbox {...register("consent")} defaultChecked={true} />
                   <span>
                     I agree to the Privacy Policy and Terms. {" "}
                     <a href="/privacy" target="_blank" className="underline">Privacy</a> · <a href="/terms" target="_blank" className="underline">Terms</a>
