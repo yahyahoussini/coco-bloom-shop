@@ -51,7 +51,6 @@ export function useProducts(options: { includeOutOfStock?: boolean } = {}) {
     try {
       setLoading(true);
 
-      // Simple slug generation
       const slug = (newProduct.name || '').toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]+/g, '');
 
       const productData = {
@@ -60,7 +59,6 @@ export function useProducts(options: { includeOutOfStock?: boolean } = {}) {
         in_stock: newProduct.inStock,
       };
 
-      // Remove frontend-only fields if they exist
       delete productData.inStock;
 
       const { data, error } = await supabase
@@ -70,11 +68,10 @@ export function useProducts(options: { includeOutOfStock?: boolean } = {}) {
 
       if (error) throw error;
 
-      await fetchProducts(); // Refetch products
+      await fetchProducts();
       return data;
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred while adding product');
-      // Re-throw the error so the form can catch it
       throw err;
     } finally {
       setLoading(false);
