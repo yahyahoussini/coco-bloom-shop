@@ -31,7 +31,7 @@ export function useProducts(options: { includeOutOfStock?: boolean } = {}) {
         price: parseFloat(item.price as any),
         currency: "MAD" as const,
         images: item.images || [],
-        variants: item.variants as any,
+        variants: item.variants || [],
         description: item.description,
         specs: item.specs || [],
         tags: item.tags || [],
@@ -57,6 +57,7 @@ export function useProducts(options: { includeOutOfStock?: boolean } = {}) {
         ...newProduct,
         slug,
         in_stock: newProduct.inStock,
+        variants: newProduct.variants || [],
       };
 
       delete productData.inStock;
@@ -112,7 +113,7 @@ export function useProduct(slug: string) {
         price: parseFloat(data.price as any),
         currency: "MAD" as const,
         images: data.images || [],
-        variants: data.variants as any,
+        variants: data.variants || [],
         description: data.description,
         specs: data.specs || [],
         tags: data.tags || [],
