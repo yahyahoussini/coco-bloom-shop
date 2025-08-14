@@ -2,22 +2,23 @@ import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import type { Product } from '@/types/models';
 
-export function useProducts() {
+export function useProducts(options: { includeOutOfStock?: boolean } = {}) {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     fetchProducts();
-  }, []);
+  }, [options.includeOutOfStock]);
 
   async function fetchProducts() {
     try {
       setLoading(true);
-      const { data, error } = await supabase
-        .from('products')
-        .select('*')
-        .eq('in_stock', true);
+      let query = supabase.from('products').select('*');
+      if (!options.includeOutOfStock) {
+        query = query.eq('in_stock', true);
+      }
+      const { data, error } = await query;
 
       if (error) throw error;
 
@@ -46,7 +47,41 @@ export function useProducts() {
     }
   }
 
-  return { products, loading, error, refetch: fetchProducts };
+  async function addProduct(newProduct: Partial<Product>) {
+    try {
+      setLoading(true);
+
+      // Simple slug generation
+      const slug = (newProduct.name || '').toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]+/g, '');
+
+      const productData = {
+        ...newProduct,
+        slug,
+        in_stock: newProduct.inStock,
+      };
+
+      // Remove frontend-only fields if they exist
+      delete productData.inStock;
+
+      const { data, error } = await supabase
+        .from('products')
+        .insert([productData])
+        .select();
+
+      if (error) throw error;
+
+      await fetchProducts(); // Refetch products
+      return data;
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'An error occurred while adding product');
+      // Re-throw the error so the form can catch it
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  return { products, loading, error, refetch: fetchProducts, addProduct };
 }
 
 export function useProduct(slug: string) {

@@ -13,10 +13,19 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { AddProductForm } from "@/components/admin/AddProductForm";
 
 export default function Products() {
-  const { products, loading, error } = useProducts();
+  const { products, loading, error, addProduct } = useProducts({ includeOutOfStock: true });
   const [search, setSearch] = useState("");
+  const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [filteredProducts, setFilteredProducts] = useState(products);
 
   useEffect(() => {
@@ -65,10 +74,23 @@ export default function Products() {
             Manage your product catalog
           </p>
         </div>
-        <Button>
-          <Plus className="h-4 w-4 mr-2" />
-          Add Product
-        </Button>
+        <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
+          <DialogTrigger asChild>
+            <Button>
+              <Plus className="h-4 w-4 mr-2" />
+              Add Product
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="sm:max-w-[425px]">
+            <DialogHeader>
+              <DialogTitle>Add New Product</DialogTitle>
+            </DialogHeader>
+            <AddProductForm
+              addProduct={addProduct}
+              onProductAdded={() => setIsAddDialogOpen(false)}
+            />
+          </DialogContent>
+        </Dialog>
       </div>
 
       <Card>
