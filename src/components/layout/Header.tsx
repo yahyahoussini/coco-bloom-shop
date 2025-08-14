@@ -23,7 +23,9 @@ const Header = () => {
         </Link>
 
         <nav className="hidden md:flex items-center gap-6 text-sm">
+          <Link to="/" className="story-link">Accueil</Link>
           <Link to="/shop" className="story-link">Boutique</Link>
+          <Link to="/track-order" className="story-link">Suivre Commande</Link>
           <Link to="/blog" className="story-link">Blog</Link>
           <Link to="/about" className="story-link">À Propos</Link>
           <Link to="/contact" className="story-link">Contact</Link>
@@ -58,8 +60,14 @@ const Header = () => {
             </SheetTrigger>
             <SheetContent side="right" className="w-64">
               <nav className="flex flex-col gap-4 mt-8">
+                <Link to="/" className="text-lg py-2 story-link" onClick={() => setIsOpen(false)}>
+                  Accueil
+                </Link>
                 <Link to="/shop" className="text-lg py-2 story-link" onClick={() => setIsOpen(false)}>
                   Boutique
+                </Link>
+                <Link to="/track-order" className="text-lg py-2 story-link" onClick={() => setIsOpen(false)}>
+                  Suivre Commande
                 </Link>
                 <Link to="/blog" className="text-lg py-2 story-link" onClick={() => setIsOpen(false)}>
                   Blog
