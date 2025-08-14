@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { toast } from "@/hooks/use-toast";
 import type { Product } from "@/types/models";
 import { useCart } from "@/state/cart";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 interface Props {
   product: Product;
@@ -16,6 +16,18 @@ const VariantSelector = ({ product, open, onOpenChange }: Props) => {
   const add = useCart(s => s.add);
   const [selections, setSelections] = useState<Record<string, string>>({});
   const [qty, setQty] = useState(1);
+
+  // Auto-select middle option for each variant when component opens
+  useEffect(() => {
+    if (open && product.variants) {
+      const autoSelections: Record<string, string> = {};
+      product.variants.forEach(variant => {
+        const middleIndex = Math.floor(variant.options.length / 2);
+        autoSelections[variant.id] = variant.options[middleIndex];
+      });
+      setSelections(autoSelections);
+    }
+  }, [open, product.variants]);
 
   const canAdd = product.variants?.every(v => selections[v.id]);
 
